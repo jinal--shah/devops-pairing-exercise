@@ -41,13 +41,13 @@ resource "aws_security_group" "web-tier" {
   description = "... ssh, http, ping for web-tier nodes"
   vpc_id      = "${var.vpc_id}"
 
-  # ... ssh
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # ... ssh - uncomment to troubleshoot during dev
+  # ingress {
+  #  from_port   = 22
+  #  to_port     = 22
+  #  protocol    = "tcp"
+  #  cidr_blocks = ["0.0.0.0/0"]
+  #}
 
   # ... http
   ingress {
@@ -133,7 +133,7 @@ resource "aws_elb" "web-elb" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3
-    target              = "TCP:80"
+    target              = "HTTP:80/version.txt"
     interval            = 30
   }
 
