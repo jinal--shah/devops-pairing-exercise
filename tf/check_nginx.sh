@@ -32,7 +32,9 @@ for ip in $ips; do
 done
 
 # ... fail if any errs
-[[ $rc -ne 0 ]] && echo "ERROR: Not all nodes serve correct version" && exit 1
-
-echo "SUCCESS. All nodes responding."
-exit 0
+if [[ $rc -ne 0 ]]; then
+    echo "ERROR: Not all nodes serve correct version"
+else
+    echo "SUCCESS. All nodes responding."
+fi
+exit $rc
