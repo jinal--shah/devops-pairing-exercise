@@ -1,7 +1,20 @@
-echo "Enter AWS_ACCESS_KEY_ID"
-read AWS_ACCESS_KEY_ID
-echo "Enter AWS_SECRET_ACCESS_KEY"
-read AWS_SECRET_ACCESS_KEY
+# vim: et sr sw=4 ts=4 smartindent
+# source before running terraform.
+
+if [[ -z "$AWS_ACCESS_KEY_ID" ]]; then
+    echo "Enter AWS_ACCESS_KEY_ID"
+    read AWS_ACCESS_KEY_ID
+else
+    echo "... aws access key id already exported. Will reuse."
+fi
+
+if [[ -z "$AWS_SECRET_ACCESS_KEY" ]]; then
+    echo "Enter AWS_SECRET_ACCESS_KEY"
+    read AWS_SECRET_ACCESS_KEY
+else
+    echo "... aws secret key already exported. Will reuse."
+fi
+
 export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
 export AWS_DEFAULT_REGION=eu-west-1
 export TF_VAR_deploy_id=$(date +'%Y%m%d%H%M%S')
