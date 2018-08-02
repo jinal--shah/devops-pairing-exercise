@@ -1,4 +1,4 @@
-# vim: et sr sw=4 ts=4 smartindent
+# vim: et sr sw=4 ts=4 smartindent syntax=sh:
 # source before running terraform.
 
 if [[ -z "$AWS_ACCESS_KEY_ID" ]]; then
