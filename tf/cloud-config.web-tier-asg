@@ -1,0 +1,47 @@
+#cloud-config
+# vim: et sr sw=2 ts=2 smartindent syntax=yaml:
+#
+coreos:
+  update:
+    reboot-strategy: "off"
+  units:
+    - name: update-engine.service
+      mask: true
+
+    - name: locksmithd.service
+      mask: true
+
+    - name: "nginx.service"
+      enable: true
+      command: "start"
+      content: |
+        [Unit]
+        Description=provides http endpoint /version.txt
+        After=docker.service docker.socket
+        Requires=docker.service docker.socket
+
+        [Service]
+        TimeoutStartSec=0
+        Restart=on-failure
+        RestartSec=120s
+        Environment="_C=nginx"
+        Environment="_DI=nginx:stable-alpine"
+        ExecStartPre=-/bin/bash -c "/usr/bin/docker kill ${_C} >/dev/null 2>&1"
+        ExecStartPre=-/bin/bash -c "/usr/bin/docker rm -f ${_C} >/dev/null 2>&1"
+        ExecStartPre=/usr/bin/docker pull ${_DI}
+        ExecStartPre=-/usr/bin/mkdir -p /home/core/www
+        ExecStart=/bin/bash -c " \
+        docker run --name ${_C} -p 80:80 -v /home/core/www:/usr/share/nginx/html:ro \
+        ${_DI}"
+
+        [Install]
+        WantedBy=multi-user.target
+
+    - name: ""
+
+write_files:
+  - path: "/home/core/www/version.txt"
+    permissions: "0755"
+    owner: "root"
+    content: |
+      1.0.1
