@@ -4,6 +4,10 @@
 
 _... ships a load-balanced, autoscaling nginx service_.
 
+>
+> requires bash 4.x and terraform 0.11.x to run.
+>
+
 ```bash
 . .setenv # enter AWS creds as prompted.
 terraform init -input=false
@@ -11,6 +15,10 @@ terraform apply -input=false -auto-approve
 ```
 
 ## VALIDATE SERVICE
+
+>
+> requires bash 4.x, AWS CLI and GNU grep to run.
+>
 
 Run `check_nginx.sh`.
 
